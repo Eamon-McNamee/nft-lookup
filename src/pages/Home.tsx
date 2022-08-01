@@ -1,21 +1,33 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import LookUp, { INftItem } from '../components/Lookup';
 
-export interface IHomePageProps {}
+export interface IHomePageProps {
+    setNftItems: React.Dispatch<React.SetStateAction<INftItem[]>>;
+    nftItems: INftItem[];
+}
 
-const HomePage: React.FunctionComponent<IHomePageProps> = (props) => {
-    const navigate = useNavigate();
+const HomePage: React.FunctionComponent<IHomePageProps> = ({ nftItems, setNftItems }) => {
+    const setSelected = (index: number) => {
+        const updatedList = [...nftItems];
+        updatedList[index].selected = true;
+        setNftItems(updatedList);
+    };
+
+    const listItems = nftItems.map((nft, indx) => (
+        <li key={`${nft.id}${indx}`}>
+            <Link to="/data" onClick={() => setSelected(indx)}>
+                {indx + 1}
+                <div />
+                {nft.item}
+            </Link>
+        </li>
+    ));
 
     return (
         <div>
-            <p>This is the home page.</p>
-            <p>
-                <Link to="/about">Go to the About Page!</Link>
-            </p>
-            <p>
-                <Link to="/test">Go to the Test Page!</Link>
-            </p>
-            <button onClick={() => navigate('/layout/55')}>Go to layout, with a number</button>
+            <LookUp setNftItems={setNftItems} nftItems={nftItems} />
+            {listItems}
         </div>
     );
 };

@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LayoutComponent from './components/Layout';
-import AboutPage from './pages/About';
+import DataPage from './pages/Data';
 import HomePage from './pages/Home';
-import TestPage from './pages/Test';
+import { INftItem } from './components/Lookup';
 
 export interface IApplicationProps {}
 
 const Application: React.FunctionComponent<IApplicationProps> = (props) => {
+    const [nftItems, setNftItems] = useState<INftItem[]>([]);
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="about">
-                    <Route index element={<AboutPage />} />
-                    <Route path=":number" element={<AboutPage />} />
+                <Route path="/" element={<HomePage nftItems={nftItems} setNftItems={setNftItems} />} />
+                <Route path="data">
+                    <Route index element={<DataPage nftItems={nftItems} setNftItems={setNftItems} />} />
+                    <Route path=":number" element={<DataPage nftItems={nftItems} setNftItems={setNftItems} />} />
                 </Route>
-                <Route path="test" element={<TestPage />} />
                 <Route path="layout" element={<LayoutComponent />}>
-                    <Route index element={<AboutPage />} />
-                    <Route path=":number" element={<AboutPage />} />
+                    <Route index element={<DataPage nftItems={nftItems} setNftItems={setNftItems} />} />
+                    <Route path=":number" element={<DataPage nftItems={nftItems} setNftItems={setNftItems} />} />
                 </Route>
             </Routes>
         </BrowserRouter>
